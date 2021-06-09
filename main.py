@@ -6,7 +6,10 @@ import time
 import subprocess
 
 #connecting to the database
-db = mysql.connector.connect(host="localhost",user="root",passwd="paramu944",database="yolo")
+db = mysql.connector.connect(host="localhost",
+                            user="root",
+                            passwd="paramu944",
+                            database="yolo")
 mycur = db.cursor()
 
 def error_destroy():
@@ -78,7 +81,7 @@ def login():
     root2.geometry("300x300")
     global username_varify
     global password_varify
-    Label(root2, text="Log-In Portal", bg="grey", fg="black", font="bold",width=300).pack()
+    Label(root2, text="Log-In Portal", bg="yellow", fg="black", font="bold",width=300).pack()
     username_varify = StringVar()
     password_varify = StringVar()
     Label(root2, text="").pack()
@@ -164,12 +167,18 @@ def logged():
             return
 
     def l():
-        ret = subprocess.run("python yolov5/detect.py --source 0 --img 1280 --weights yolov5/weights/watch.pt --save-txt")
+        ret = subprocess.run("python track.py --source 0 --img 1280 --weights yolov5/weights/watch.pt --save-txt")
         if ret:
             return
 
     def m():
         ret = subprocess.run("python yolov5/detect.py --source 0 --img 640 --weights yolov5/weights/penm6.pt --save-txt")
+        if ret:
+            return
+
+
+    def n():
+        ret = subprocess.run("python yolov5/detect.py --source 0 --img 640 --weights yolov5/weights/yolov5m6.pt --class 67 --save-txt")
         if ret:
             return
 
@@ -188,7 +197,8 @@ def logged():
     b11=Button(logg,text="home dataset [open cv]",command=k)
     b12=Button(logg,text="watch",command=l)
     b13=Button(logg,text="pen and pencil",command=m)
-    b14=Button(logg, text="Log-Out", bg="grey", command=logg_destroy)
+    b14=Button(logg,text="cell phone",command=n)
+    b15=Button(logg, text="Log-Out", bg="grey", command=logg_destroy)
 
     b1.grid(row=1, column=0, padx=40, pady=15, sticky=W + N)
     b2.grid(row=2, column=0, padx=40, pady=15, sticky=W + N)
@@ -204,13 +214,14 @@ def logged():
     b12.grid(row=3, column=3, padx=40, pady=15, sticky=W + N)
     b13.grid(row=1, column=4, padx=40, pady=15, sticky=W + N)
     b14.grid(row=2, column=4, padx=40, pady=15, sticky=W + N)
+    b15.grid(row=3, column=4, padx=40, pady=15, sticky=W + N)
 
 
 def failed():
     global fail
     fail = Toplevel(root2)
     fail.title("Invalid")
-    fail.geometry("200x100")
+    fail.geometry("300x200")
     Label(fail, text="Invalid credentials...", fg="red", font="bold").pack()
     Label(fail, text="").pack()
     Button(fail, text="Ok", bg="grey", width=8, height=1, command=fail_destroy).pack()
@@ -228,21 +239,26 @@ def login_varify():
             break
     else:
         failed()
-
+def exit():
+    root.destroy()
 
 def main_screen():
     global root
     root = Tk()
     root.title("MULTIPLE OBJECT TRACKING")
     root.geometry("500x500")
-    Label(root,text="Welcome to Multiple-Object-Tracking",font="bold",bg="grey",fg="black",width=300).pack()
+    Label(root,text="Welcome to Multiple-Object-Tracking",font="bold",bg="green",fg="black",width=300).pack()
     Label(root,text="").pack()
     Button(root,text="Log-IN",width="8",height="1",bg="red",font="bold",command=login).pack()
     Label(root,text="").pack()
     Button(root, text="Registration",height="1",width="15",bg="red",font="bold",command=registration).pack()
     Label(root,text="").pack()
     Label(root,text="").pack()
-    Label(root,text="Developed By Group 3 ").pack()
+    Label(root,text="Developed By Group Three ").pack()
+    Label(root,text="").pack()
+    Label(root,text="").pack()
+    Label(root,text="").pack()
+    Button(root, text="Exit",height="1",width="15",bg="blue",font="bold",command=exit).pack()
 
 main_screen()
 root.mainloop()
